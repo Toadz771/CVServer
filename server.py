@@ -7,13 +7,22 @@ import cv2
 import threading
 import logging
 import os
+import urllib.request  # Ensure this import is present
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+# Download YOLO model if not present
+model_path = "yolo11x-seg.pt"
+if not os.path.exists(model_path):
+    logger.info("Downloading YOLO model from Google Drive...")
+    model_url = "https://drive.google.com/uc?export=download&id=1_FBHoGbMnpyJFbOj2jaU0Ir9u1Nt0Jvu"  # Replace with your file ID
+    urllib.request.urlretrieve(model_url, model_path)  # Correct usage
+    logger.info("Model downloaded successfully")
+
 # Load YOLO model
-model = YOLO("yolo11x-seg.pt")
+model = YOLO(model_path)
 
 def handle_client(conn, addr):
     logger.info(f"Connected to client: {addr}")
@@ -62,7 +71,7 @@ def handle_client(conn, addr):
     conn.close()
 
 def main():
-    port = int(os.environ.get("PORT", 12345))  # Use Render's PORT or default to 12345
+    port = int(os.environ.get("PORT", 12345))
     godot_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     godot_server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     godot_server.bind(("0.0.0.0", port))
