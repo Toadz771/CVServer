@@ -7,22 +7,13 @@ import cv2
 import threading
 import logging
 import os
-import gdown  # New import for Google Drive
 
 # Setup logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-# Download YOLO model if not present
-model_path = "yolo11x-seg.pt"
-if not os.path.exists(model_path):
-    logger.info("Downloading YOLO model from Google Drive...")
-    model_url = "https://drive.google.com/uc?id=1_FBHoGbMnpyJFbOj2jaU0Ir9u1Nt0Jvu"  # Replace with your file ID
-    gdown.download(model_url, model_path, quiet=False)
-    logger.info("Model downloaded successfully")
-
-# Load YOLO model
-model = YOLO(model_path)
+# Load YOLO model (auto-downloads yolo11n-seg.pt if not present)
+model = YOLO("yolo11n-seg.pt")
 
 def handle_client(conn, addr):
     logger.info(f"Connected to client: {addr}")
