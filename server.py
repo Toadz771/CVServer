@@ -12,6 +12,13 @@ import os
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+model_path = "yolo11x-seg.pt"
+if not os.path.exists(model_path):
+    logger.info("Downloading YOLO model...")
+    model_url = "https://drive.google.com/uc?export=download&id=1_FBHoGbMnpyJFbOj2jaU0Ir9u1Nt0Jvu"  # Replace with your link
+    urllib.request.urlretrieve(model_url, model_path)
+    logger.info("Model downloaded")
+
 # Load YOLO model
 model = YOLO("yolo11x-seg.pt")
 
