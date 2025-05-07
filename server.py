@@ -10,7 +10,6 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Load YOLO model
 model = YOLO("yolo11n-seg.pt")
 
 @app.route("/detect", methods=["POST"])
